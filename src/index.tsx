@@ -1,21 +1,20 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { render } from 'react-dom';
-import Hello from './Hello';
 import './style.css';
-import { IPage, Service, ICharacters } from './service';
+import { IPage, Service, ICharacters, IError } from './service';
 import { List, Avatar } from 'antd';
 import { Layout, Menu, Breadcrumb } from 'antd';
 const { Header, Content, Footer } = Layout;
 
 interface AppProps { }
 interface AppState {
-  data: IPage;
+  data: IPage | null;
   loading: boolean;
 }
 
-class App extends Component<AppProps, AppState> {
+class App extends React.Component<AppProps, AppState> {
   service: Service;
-  constructor(props) {
+  constructor(props: AppProps) {
     super(props);
     this.state = {
       data: null,
@@ -33,10 +32,10 @@ class App extends Component<AppProps, AppState> {
   paginate(page: number) {
     this.setState(Object.assign(this.state, { loading: true }));
     this.service.getCharacters(page)
-    .then(data => {
+    .then((data: IPage) => {
       this.setState(Object.assign(this.state, { data, loading: false }))
     })
-    .catch( err => {
+    .catch( (err: IError) => {
       console.warn('Error Obteniendo episodios')
     });
   }
@@ -71,7 +70,7 @@ class App extends Component<AppProps, AppState> {
             pageSize:  20,
           }}
           dataSource={this.state.data.results}
-          renderItem={item => (
+          renderItem={(item: ICharacters) => (
             <List.Item>
               <List.Item.Meta
                 avatar={<Avatar src={item.image} />}

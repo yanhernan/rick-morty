@@ -14,6 +14,7 @@ export interface ICharacters {
   location: IOrigin;
   episode: string[];
   url: string;
+  image: string;
   created: string | Date;
 }
 
@@ -36,7 +37,7 @@ export interface IError {
 
 export class Service {
 
-  private processJson(promise: Promise<Response>): Promise<IPage> | Promise<IError> {
+  private processJson(promise: Promise<Response>): any {
     return promise
     .then(res => {
       if (res.ok) { 
